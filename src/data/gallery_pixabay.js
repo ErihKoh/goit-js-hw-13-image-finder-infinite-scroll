@@ -48,24 +48,23 @@ function onSearch(e) {
     fetchData();
 }
 
-function fetchData() {
+async function fetchData() {
 
     try {
-
-        imageApiService.fetchImage().then(({ hits }) => {
-           
-            if (hits.length === 0) {
+        const { hits } = await imageApiService.fetchImage();
+       
+          if (hits.length === 0) {
             
-                clearImageMarkup();
+            clearImageMarkup();
 
-                return error({
+            return error({
               
-                  title: "Error",
-                  text: "Image not found! Repeat query!"
+                title: "Error",
+                text: "Image not found! Repeat query!"
         });
     }
         appendImagesMarkup(hits);
-    });
+  
     } catch (error) {
         console.log('ошибка в fetchData', error);
     }
