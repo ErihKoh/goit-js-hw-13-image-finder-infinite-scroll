@@ -2,6 +2,7 @@
 import galleryImagesTpl from '../templates/gallery_image.hbs';
 import ImageApiServise from './api-servise';
 import refs from './refs';
+import InfiniteScroll from "infinite-scroll";
 import * as basicLightbox from 'basiclightbox';
 import 'basiclightbox/dist/basicLightbox.min.css';
 import '@pnotify/core/dist/BrightTheme.css';
@@ -73,18 +74,41 @@ async function fetchData() {
 }
 
 function appendImagesMarkup(hits) {
-    let movePage = refs.gallery.offsetHeight;
+    // let movePage = refs.gallery.offsetHeight;
     refs.gallery.insertAdjacentHTML('beforeend', galleryImagesTpl(hits));
 
-    window.scrollTo({
+//     window.scrollTo({
 
-      top: movePage,
-      behavior: "smooth",
+//       top: movePage,
+//       behavior: "smooth",
       
-  });
+//   });
 }
 
 function clearImageMarkup() {
     refs.gallery.innerHTML = '';
 }
 
+
+
+
+
+const infScroll = new InfiniteScroll(refs.gallery, {
+  responseType: "text",
+  history: false,
+  status: ".page-load-status",
+    path() {
+         const API_KEY = '18969292-6634fe46747360e3150bf5a1e';
+        const BASE_URL = `https://pixabay.com/api`; 
+        const PROXY = "https://cors-anywhere.herokuapp.com";
+        return `${PROXY}/${BASE_URL}/?image_type=photo&orientation=horizontal&q=${imageApiService.searchName}&page=${imageApiService.pageIndex}&per_page=12&key=${API_KEY}`;
+    },
+})
+
+infScroll.on("load", (response) => {
+   const { hits } = JSON.parse(response);
+   
+    
+  appendImagesMarkup(hits);
+  
+});
