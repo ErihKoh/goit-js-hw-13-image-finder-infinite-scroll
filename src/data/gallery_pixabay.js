@@ -106,9 +106,9 @@ const infScroll = new InfiniteScroll(refs.gallery, {
 })
 
 infScroll.on("load", (response) => {
-   const { hits } = JSON.parse(response);
+    const { hits } = JSON.parse(response);
    
-    
-  appendImagesMarkup(hits);
+    appendImagesMarkup(hits);
+    imageApiService.incrementPage();
   
 });

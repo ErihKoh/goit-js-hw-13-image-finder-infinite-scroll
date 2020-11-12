@@ -19,7 +19,7 @@ export default class ImageApiServise {
     }
 
     incrementPage() {
-        this.page += 1;
+        this.pageIndex += 1;
     }
 
     resetPage() {
